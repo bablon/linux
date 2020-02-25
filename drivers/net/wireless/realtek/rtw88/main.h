@@ -1373,7 +1373,7 @@ struct rtw_dev {
 	u8 mp_mode;
 
 	/* hci related data, must be last */
-	u8 priv[0] __aligned(sizeof(void *));
+	u8 priv[] __aligned(sizeof(void *));
 };
 
 #include "hci.h"
