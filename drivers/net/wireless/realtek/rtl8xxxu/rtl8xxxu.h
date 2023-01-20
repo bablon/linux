@@ -5,6 +5,7 @@
  * Register definitions taken from original Realtek rtl8723au driver
  */
 
+#include <linux/leds.h>
 #include <asm/byteorder.h>
 
 #define RTL8XXXU_DEBUG_REG_WRITE	0x01
@@ -1443,6 +1444,8 @@ struct rtl8xxxu_cfo_tracking {
 	u32 packet_count_pre;
 };
 
+#define RTL8XXXU_HW_LED_CONTROL	2
+
 struct rtl8xxxu_priv {
 	struct ieee80211_hw *hw;
 	struct usb_device *udev;
@@ -1564,6 +1567,10 @@ struct rtl8xxxu_priv {
 	struct rtl8xxxu_ra_report ra_report;
 	struct rtl8xxxu_cfo_tracking cfo_tracking;
 	struct rtl8xxxu_ra_info ra_info;
+
+	bool led_registered;
+	char led_name[32];
+	struct led_classdev led_cdev;
 };
 
 struct rtl8xxxu_rx_urb {
@@ -1613,6 +1620,8 @@ struct rtl8xxxu_fileops {
 			     u32 rts_rate);
 	void (*set_crystal_cap) (struct rtl8xxxu_priv *priv, u8 crystal_cap);
 	s8 (*cck_rssi) (struct rtl8xxxu_priv *priv, u8 cck_agc_rpt);
+	int (*led_classdev_brightness_set) (struct led_classdev *led_cdev,
+					    enum led_brightness brightness);
 	int writeN_block_size;
 	int rx_agg_buf_size;
 	char tx_desc_size;
