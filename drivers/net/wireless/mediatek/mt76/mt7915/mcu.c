@@ -2427,9 +2427,11 @@ int mt7915_mcu_add_sta(struct mt7915_dev *dev, struct ieee80211_vif *vif,
 	if (IS_ERR(skb))
 		return PTR_ERR(skb);
 
-	mt7915_mcu_sta_basic_tlv(skb, vif, sta, enable);
-	if (enable && sta)
-		mt7915_mcu_sta_tlv(dev, skb, sta, vif);
+	/* starec basic */
+	mt76_connac_mcu_sta_basic_tlv(&dev->mt76, skb, vif, sta, enable,
+				      !rcu_access_pointer(dev->mt76.wcid[msta->wcid.idx]));
+	if (!enable)
+		goto out;
 
 	sta_wtbl = mt7915_mcu_add_tlv(skb, STA_REC_WTBL, sizeof(struct tlv));
 
