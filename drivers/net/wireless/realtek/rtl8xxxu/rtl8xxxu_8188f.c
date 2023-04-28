@@ -1748,6 +1748,7 @@ struct rtl8xxxu_fileops rtl8188fu_fops = {
 	.gen2_thermal_meter = 1,
 	.needs_full_init = 1,
 	.supports_ap = 1,
+	.max_macid_num = 16,
 	.adda_1t_init = 0x03c00014,
 	.adda_1t_path_on = 0x03c00014,
 	.trxff_boundary = 0x3f7f,
